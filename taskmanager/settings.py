@@ -9,35 +9,25 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
+from dotenv import load_dotenv
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("DJANGO_SECRET_KEY is not set")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+DEBUG = os.getenv("DJANGO_DEBUG", "0") == "1"
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Закинуть в другой файл, файл в getignore, а сюда поставить ссылку на файл?
-SECRET_KEY = 'django-insecure-41efa8vcxv0hv!w5^_vjea7iqfd&um82)tpa_9yxs9bjow)g=e'
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if h.strip()]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#Так уж и быть, без дебагов
-DEBUG = False
-#ругается на токены или я редко обновлял страницу
-CSRF_TRUSTED_ORIGINS = [
-    "https://qjnfdoxc2qva.connect.remote.it",
-    "https://*.connect.remote.it" #строчка для remoteit
-]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()]
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "qjnfdoxc2qva.connect.remote.it" #строчка для remoteit
-]
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
