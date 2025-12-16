@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Задачи{% endblock %}
+{% block content %}
+<h1>Задачи</h1>
+
+<p><a class="btn" href="{% url 'task_create' %}">+ Новая задача</a></p>
+
+<form method="get" class="card">
+  <div class="row">
+    <div>
+      <label>Поиск</label>
+      <input name="q" value="{{ request.GET.q }}" placeholder="Название или описание">
+    </div>
+    <div>
+      <label>Статус</label>
+      <select name="status">
+        <option value="">Все</option>
+        <option value="TODO" {% if request.GET.status == "TODO" %}selected{% endif %}>Сделать</option>
+        <option value="INPR" {% if request.GET.status == "INPR" %}selected{% endif %}>В процессе</option>
+        <option value="DONE" {% if request.GET.status == "DONE" %}selected{% endif %}>Выполено</option>
+      </select>
+    </div>
+    <div>
+      <label>Приоритет</label>
+      <select name="priority">
+        <option value="">Все</option>
+        <option value="1" {% if request.GET.priority == "1" %}selected{% endif %}>Низкий</option>
+        <option value="2" {% if request.GET.priority == "2" %}selected{% endif %}>Средний</option>
+        <option value="3" {% if request.GET.priority == "3" %}selected{% endif %}>Высокий</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn" type="submit">Применить</button>
+</form>
+
+{% for task in tasks %}
+  <div class="card">
+    <h3><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></h3>
+    <p class="muted">
+      Статус: {{ task.get_status_display }} |
+      Приоритет: {{ task.get_priority_display }} |
+      Дедлайн: {{ task.due_date|default:"—" }}
+    </p>
+    <p>{{ task.description|default:"" }}</p>
+  </div>
+{% empty %}
+  <p>Задач нет.</p>
+{% endfor %}
+
+{% if is_paginated %}
+  <div class="card">
+    <span class="muted">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span><br>
+    {% if page_obj.has_previous %}
+      <a class="btn" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">Назад</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+      <a class="btn" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&status={{ request.GET.status }}&priority={{ request.GET.priority }}">Вперёд</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}

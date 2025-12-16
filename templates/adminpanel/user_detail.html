@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Пользователь {{ u.username }}{% endblock %}
+
+{% block content %}
+<h1>Пользователь: {{ u.username }}</h1>
+
+<div class="card">
+  <p><b>ID:</b> {{ u.id }}</p>
+  <p><b>Активен:</b> {{ u.is_active }}</p>
+  <p><b>Персонал:</b> {{ u.is_staff }}</p>
+  <p><b>Суперпользователь:</b> {{ u.is_superuser }}</p>
+  <p><b>Последний вход:</b> {{ u.last_login|default:"—" }}</p>
+  <p><b>Дата регистрации:</b> {{ u.date_joined }}</p>
+  <p><b>Всего задач:</b> {{ tasks_total }}</p>
+
+  <p><a class="btn" href="{% url 'admin_user_list' %}">Назад к списку</a></p>
+</div>
+
+<h2>Последние задачи (до 50)</h2>
+{% for t in tasks %}
+  <div class="card">
+    <h3>{{ t.title }}</h3>
+    <p class="muted">
+      Статус: {{ t.get_status_display }} |
+      Приоритет: {{ t.get_priority_display }} |
+      Дедлайн: {{ t.due_date|default:"—" }} |
+      Создано: {{ t.created_at }}
+    </p>
+    <p>{{ t.description|default:"" }}</p>
+  </div>
+{% empty %}
+  <p>У пользователя нет задач.</p>
+{% endfor %}
+{% endblock %}

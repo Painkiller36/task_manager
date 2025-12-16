@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Задача{% endblock %}
+{% block content %}
+<h1>{{ task.title }}</h1>
+
+<div class="card">
+  <p><b>Статус:</b> {{ task.get_status_display }}</p>
+  <p><b>Приоритет:</b> {{ task.get_priority_display }}</p>
+  <p><b>Дедлайн:</b> {{ task.due_date|default:"—" }}</p>
+  <p><b>Описание:</b><br>{{ task.description|linebreaksbr|default:"—" }}</p>
+
+  <p>
+    <a class="btn" href="{% url 'task_edit' task.pk %}">Редактировать</a>
+    <a class="btn" href="{% url 'task_delete' task.pk %}">Удалить</a>
+  </p>
+</div>
+
+{% endblock %}

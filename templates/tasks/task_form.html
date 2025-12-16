@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Задача{% endblock %}
+{% block content %}
+<h1>{% if object %}Редактирование{% else %}Новая задача{% endif %}</h1>
+
+<form method="post" class="card">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">Сохранить</button>
+  <a class="btn" href="{% url 'task_list' %}">Отмена</a>
+</form>
+
+{% endblock %}

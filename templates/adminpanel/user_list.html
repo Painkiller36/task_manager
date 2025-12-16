@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Пользователи{% endblock %}
+
+{% block content %}
+<h1>Пользователи</h1>
+
+<form method="get" class="card">
+  <label>Поиск по имени</label>
+  <input name="q" value="{{ request.GET.q }}" placeholder="например: oleg">
+  <button class="btn" type="submit">Искать</button>
+</form>
+
+{% for u in users %}
+  <div class="card">
+    <h3>
+      <a href="{% url 'admin_user_detail' u.pk %}">{{ u.username }}</a>
+    </h3>
+    <p class="muted">
+      Активен: {{ u.is_active }} |
+      Персонал: {{ u.is_staff }} |
+      Суперпользователь: {{ u.is_superuser }} |
+      Задач: {{ u.tasks_count }} |
+      Зарегистрирован: {{ u.date_joined }}
+    </p>
+  </div>
+{% empty %}
+  <p>Пользователей не найдено.</p>
+{% endfor %}
+
+{% if is_paginated %}
+  <div class="card">
+    <span class="muted">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span><br>
+    {% if page_obj.has_previous %}
+      <a class="btn" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Назад</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+      <a class="btn" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Вперёд</a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}
