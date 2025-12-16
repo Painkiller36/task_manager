@@ -20,20 +20,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Закинуть в другой файл, файл в getignore, а сюда поставить ссылку на файл?
 SECRET_KEY = 'django-insecure-41efa8vcxv0hv!w5^_vjea7iqfd&um82)tpa_9yxs9bjow)g=e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+#Так уж и быть, без дебагов
+DEBUG = False
+#ругается на токены или я редко обновлял страницу
 CSRF_TRUSTED_ORIGINS = [
     "https://qjnfdoxc2qva.connect.remote.it",
-    "https://*.connect.remote.it"
+    "https://*.connect.remote.it" #строчка для remoteit
 ]
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "qjnfdoxc2qva.connect.remote.it"
+    "qjnfdoxc2qva.connect.remote.it" #строчка для remoteit
 ]
 # Application definition
 

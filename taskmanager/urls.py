@@ -20,7 +20,11 @@ from django.contrib.auth import views as auth_views
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.cache import never_cache
 
+
+# Следующая строчка чтобы не падал при перезагрузках, ругался с 403
 login_view = never_cache(ensure_csrf_cookie(auth_views.LoginView.as_view()))
+
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
