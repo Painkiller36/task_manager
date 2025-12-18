@@ -15,6 +15,24 @@
     input, select, textarea { width: 100%; padding: 8px; margin: 6px 0 12px; }
     .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
     @media (max-width: 800px) { .row { grid-template-columns: 1fr; } }
+
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  input, select {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 12px;
+  }
+
+
+  textarea {
+    min-height: 140px;
+    padding: 10px 12px;
+    resize: vertical;
+  }
+
+  label { display: block; margin: 10px 0 6px; }
   </style>
 </head>
 <body>
